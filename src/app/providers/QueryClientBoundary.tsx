@@ -28,8 +28,8 @@ const QueryClientBoundary = ({ children }: React.PropsWithChildren) => {
 
           return false;
         },
-        staleTime: 0,
-        gcTime: 0,
+        staleTime: 1000 * 60 * 3, // 3 minute
+        gcTime: 1000 * 60 * 3, // 3 minute
 
         refetchOnWindowFocus: false,
 

@@ -1,10 +1,15 @@
 import { endpoints } from "@/shared/lib/consts/endpoints";
-import { requestGet } from "../request";
+import {
+  requestDelete,
+  requestGet,
+  requestPostWithoutResponse,
+} from "../request";
 
 export type TodoType = {
-  id: number;
+  id: string;
   title: string;
   description: string;
+  priority: "상" | "중" | "하";
 };
 
 export const requestGetAllTodo = async (): Promise<TodoType[]> => {
@@ -12,4 +17,25 @@ export const requestGetAllTodo = async (): Promise<TodoType[]> => {
     endpoint: endpoints.todo.getAllTodo,
     errorHandlingStrategy: "errorBoundary",
   });
+};
+
+export const requestPostTodo = async ({
+  id,
+  title,
+  description,
+  priority,
+}: TodoType) => {
+  await requestPostWithoutResponse({
+    endpoint: endpoints.todo.postTodo,
+    body: {
+      id,
+      title,
+      description,
+      priority,
+    },
+  });
+};
+
+export const requestDeleteTodo = async (id: string) => {
+  await requestDelete({ endpoint: endpoints.todo.deleteTodo, body: { id } });
 };

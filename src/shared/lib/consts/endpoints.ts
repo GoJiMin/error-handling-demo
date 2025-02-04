@@ -13,5 +13,7 @@ export const endpoints = {
 
   todo: {
     getAllTodo: "/todo",
+    postTodo: "/todo",
+    deleteTodo: "/todo",
   },
 };

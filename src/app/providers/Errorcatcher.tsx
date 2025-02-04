@@ -25,6 +25,7 @@ const ErrorCatcher = ({ children }: { children: React.ReactNode }) => {
     toast({
       title: "에러가 발생했어요.",
       description: SERVER_ERROR_MESSAGE[error.errorCode],
+      variant: "destructive",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);

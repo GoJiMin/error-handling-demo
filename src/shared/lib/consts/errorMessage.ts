@@ -17,7 +17,11 @@ export const SERVER_ERROR_MESSAGE: ErrorMessage = {
 
   // 상품 에러
   PRODUCTS_NOT_FOUND: "상품 정보를 찾을 수 없어요.",
-  PRODUCTS_어떤에러: "에러를 여기 추가.",
+
+  // 투두 에러
+  TODO_TITLE_INVALID: "투두 이름에 포함될 수 없는 문자가 있어요. 예) /",
+  TODO_ID_INVALID: "삭제할 투두의 아이디를 확인해주세요.",
+  TODO_NOT_FOUND: "투두를 가져오는데 실패했어요.",
 };
 
 export const ERROR_MESSAGE: ErrorMessage = {

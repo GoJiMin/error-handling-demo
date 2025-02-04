@@ -78,3 +78,21 @@
     @apply bg-background text-foreground;
   }
 }
+
+body {
+  /* Firefox */
+  scrollbar-width: 4px;
+  scrollbar-color: #ffffff;
+  scrollbar-face-color: #000000;
+}
+
+::-webkit-scrollbar {
+  /* Safari and Chrome */
+  background-color: #ffffff;
+  width: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  /* Safari and Chrome */
+  background-color: #000000;
+}
