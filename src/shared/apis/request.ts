@@ -1,16 +1,3 @@
-/**
- * 먼저 이 파일을 읽기 이전에 API가 어떻게 호출되는지 순서를 보고 가시면 좋겠어요.
- *
- * 1. request 함수가 호출돼요.
- * - request 함수가 API 호출의 시작점이라고 볼 수 있어요.
- * - request 함수는 크게 prepareRequest와 executeRequest 나뉘어요.
- * - prepareRequest와 executeRequest 함수는 말 그대로 함수를 준비하고 실행하는 함수들이에요.
- * 2. prepareRequest 함수가 호출돼요.
- * - baseurl과 request 함수를 호출할 때 인자로 넘긴 endpoint를 합성해 url을 생성해요.
- * - 만약 queryParmas가 있다면 url에 추가해요.
- * -
- */
-
 import RequestError from "@/entities/errors/RequestError";
 import {
   RequestGetError,
@@ -18,26 +5,24 @@ import {
 } from "@/entities/errors/RequestGetError";
 import objectToQueryString from "@/shared/lib/utils/objectToQueryString";
 
-// 우리 서비스에서 사용하는 HTTP Method를 정의한 유니온 타입이에요.
 export type Method = "GET" | "POST" | "DELETE";
 
-// { "string": "string" | 25 | true } 형식이라는 의미에요.
 export type ObjectQueryParams = Record<string, string | number | boolean>;
 export type Body = BodyInit | object | null;
 
-const API_BASE_URL = "http://localhost:3001/api";
+const API_BASE_URL = "http://localhost:3000/api";
 
 type HeadersType = [string, string][] | Record<string, string> | Headers;
 
 type RequestInitWithMethod = Omit<RequestInit, "method"> & { method: Method };
 
 type RequestProps = {
-  baseUrl?: string;
-  endpoint: string;
-  method: Method;
-  headers?: HeadersType;
-  body?: Body;
-  queryParams?: ObjectQueryParams;
+  baseUrl?: string; // 기본 API URL.
+  endpoint: string; // API의 엔드포인트 경로.
+  method: Method; // HTTP 메서드 (현재의 경우 GET, POST, DELETE가 있겠죠?).
+  headers?: HeadersType; // 요청 헤더.
+  body?: Body; // 요청 본문.
+  queryParams?: ObjectQueryParams; // URL에 붙을 쿼리 파라미터.
 };
 
 type RequestMethodProps = Omit<RequestProps, "method">;

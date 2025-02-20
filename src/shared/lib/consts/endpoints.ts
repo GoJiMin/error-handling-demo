@@ -16,4 +16,12 @@ export const endpoints = {
     postTodo: "/todo",
     deleteTodo: "/todo",
   },
+
+  photo: {
+    getPhotos: "/photos?albumId=1",
+  },
+
+  posts: {
+    getPosts: "/posts",
+  },
 };

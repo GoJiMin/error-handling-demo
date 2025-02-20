@@ -1,1 +1,2 @@
-export { default as useRequestGetUser } from "./model/useRequestGetAllProducts";
+export { default as useRequestGetAllProducts } from "./model/useRequestGetAllProducts";
+export { productsQueryOptions } from "./model/productService";

@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-
   // 에러 던져서 확인해보고 싶으면 주석 풀기.
   // return NextResponse.json(
   //   {

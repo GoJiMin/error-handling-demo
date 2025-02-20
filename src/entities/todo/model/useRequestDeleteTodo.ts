@@ -1,6 +1,6 @@
-import { requestDeleteTodo, TodoType } from "@/shared/apis/request/todo";
-import QUERY_KEYS from "@/shared/lib/consts/queryKeys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { todoQueryKeys } from "./todoService";
+import { requestDeleteTodo, TodoType } from "@/shared/apis/request/todo";
 
 const useRequestDeleteTodo = () => {
   const queryClient = useQueryClient();
@@ -9,15 +9,15 @@ const useRequestDeleteTodo = () => {
     mutationFn: (id: string) => requestDeleteTodo(id),
     onMutate: async (id: string) => {
       // 낙관적 업데이트
-      await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.todo] });
+      await queryClient.cancelQueries({ queryKey: todoQueryKeys.all });
 
-      const previousTodos = queryClient.getQueryData<TodoType[]>([
-        QUERY_KEYS.todo,
-      ]);
+      const previousTodos = queryClient.getQueryData<TodoType[]>(
+        todoQueryKeys.all
+      );
 
       if (previousTodos) {
         queryClient.setQueryData<TodoType[]>(
-          [QUERY_KEYS.todo],
+          todoQueryKeys.all,
           previousTodos.filter((todo) => todo.id !== id)
         );
       }
@@ -26,11 +26,11 @@ const useRequestDeleteTodo = () => {
     },
 
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.todo] }),
+      queryClient.invalidateQueries({ queryKey: todoQueryKeys.all }),
 
     onSettled: (data, error, id, context) => {
       if (error && context) {
-        queryClient.setQueryData([QUERY_KEYS.todo], context.previousTodos);
+        queryClient.setQueryData(todoQueryKeys.all, context.previousTodos);
       }
     },
   });

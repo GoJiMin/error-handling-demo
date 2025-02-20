@@ -7,8 +7,6 @@ type Context = {
 export async function GET(_: NextRequest, { params }: Context) {
   const { id } = await params;
 
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-
   if (id === "USER_NOT_FOUND") {
     return NextResponse.json(
       {

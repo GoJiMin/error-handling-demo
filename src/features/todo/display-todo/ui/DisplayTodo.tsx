@@ -1,7 +1,7 @@
 "use client";
 
-import { useRequestGetAllTodo } from "@/entities/todo";
 import TodoItem from "./TodoItem";
+import { useRequestGetAllTodo } from "@/entities/todo";
 import { LucideIcon } from "@/shared/ui/icons";
 
 export default function DisplayTodo() {

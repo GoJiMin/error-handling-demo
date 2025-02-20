@@ -1,25 +1,28 @@
-import { Suspense } from "react";
-import { ErrorBoundary } from "react-error-boundary";
-import { ProductList, ProductListLoading } from "@/features/products";
+import { userQueryOptions } from "@/entities/user";
+import { productsQueryOptions } from "@/entities/products";
 import { UserCard, UserCardLoading } from "@/features/user";
-import {
-  ErrorFallbackWithIcon,
-  ErrorFallbackWithoutIcon,
-} from "@/shared/ui/error-fallback";
+import { ProductList, ProductListLoading } from "@/features/products";
+import { RQProvider } from "@/shared/ui/react-query";
+import { ErrorFallbackWithIcon } from "@/shared/ui/error-fallback";
+import { getDehydratedQueries } from "@/shared/lib/utils/react-query";
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const { queries } = await getDehydratedQueries({
+    queries: [userQueryOptions.all("253"), productsQueryOptions.all()],
+  });
+
   return (
     <section className="h-full p-4 flex flex-col gap-4">
-      <ErrorBoundary FallbackComponent={ErrorFallbackWithoutIcon}>
-        <Suspense fallback={<UserCardLoading />}>
-          <UserCard />
-        </Suspense>
-      </ErrorBoundary>
-      <ErrorBoundary FallbackComponent={ErrorFallbackWithIcon}>
-        <Suspense fallback={<ProductListLoading />}>
-          <ProductList />
-        </Suspense>
-      </ErrorBoundary>
+      <RQProvider state={queries} LoadingFallback={<UserCardLoading />}>
+        <UserCard />
+      </RQProvider>
+      <RQProvider
+        state={queries}
+        LoadingFallback={<ProductListLoading />}
+        ErrorFallback={ErrorFallbackWithIcon}
+      >
+        <ProductList />
+      </RQProvider>
     </section>
   );
 }

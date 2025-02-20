@@ -1,11 +1,18 @@
-import { DisplayTodo, DisplayTodoLoading } from "@/features/todo/display-todo";
-import InputTodo from "@/features/todo/input-todo/ui/InputTodo";
+import { todoQueryOptions } from "@/entities/todo";
+import { DisplayTodo } from "@/features/todo/display-todo";
+import { InputTodo } from "@/features/todo/input-todo";
+import { getDehydratedQuery } from "@/shared/lib/utils/react-query";
 import { ErrorFallbackWithIcon } from "@/shared/ui/error-fallback";
 import { LucideIcon } from "@/shared/ui/icons";
-import { Suspense } from "react";
-import { ErrorBoundary } from "react-error-boundary";
+import { LoadingSpinner } from "@/shared/ui/spinners";
+import { RQProvider } from "@/shared/ui/react-query";
 
-export default function TodoPage() {
+export default async function TodoPage() {
+  const { query } = await getDehydratedQuery({
+    query: todoQueryOptions.all(),
+    useSuspense: true,
+  });
+
   return (
     <section className="w-full h-full flex flex-col">
       <section className="h-full grid grid-cols-[0.7fr_1fr] p-2 gap-6">
@@ -22,11 +29,15 @@ export default function TodoPage() {
           </div>
           <InputTodo />
         </article>
-        <ErrorBoundary FallbackComponent={ErrorFallbackWithIcon}>
-          <Suspense fallback={<DisplayTodoLoading />}>
-            <DisplayTodo />
-          </Suspense>
-        </ErrorBoundary>
+        <RQProvider
+          state={query}
+          LoadingFallback={
+            <LoadingSpinner text="저장된 리스트를 불러오고 있어요." />
+          }
+          ErrorFallback={ErrorFallbackWithIcon}
+        >
+          <DisplayTodo />
+        </RQProvider>
       </section>
     </section>
   );

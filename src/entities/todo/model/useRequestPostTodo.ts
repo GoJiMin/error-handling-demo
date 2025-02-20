@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { todoQueryKeys } from "./todoService";
 import { requestPostTodo, TodoType } from "@/shared/apis/request/todo";
-import QUERY_KEYS from "@/shared/lib/consts/queryKeys";
 
 const useRequestPostTodo = () => {
   const queryClient = useQueryClient();
@@ -10,28 +10,28 @@ const useRequestPostTodo = () => {
       requestPostTodo({ id, title, description, priority }),
     onMutate: async (newTodo: TodoType) => {
       // 낙관적 업데이트
-      await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.todo] });
+      await queryClient.cancelQueries({ queryKey: todoQueryKeys.all });
 
-      const previousTodos = queryClient.getQueryData<TodoType[]>([
-        QUERY_KEYS.todo,
-      ]);
+      const previousTodos = queryClient.getQueryData<TodoType[]>(
+        todoQueryKeys.all
+      );
 
       if (previousTodos) {
-        queryClient.setQueryData<TodoType[]>(
-          [QUERY_KEYS.todo],
-          [...previousTodos, newTodo]
-        );
+        queryClient.setQueryData<TodoType[]>(todoQueryKeys.all, [
+          ...previousTodos,
+          newTodo,
+        ]);
       }
 
       return { previousTodos };
     },
 
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.todo] }),
+      queryClient.invalidateQueries({ queryKey: todoQueryKeys.all }),
 
     onSettled: (data, error, newTodo, context) => {
       if (error && context) {
-        queryClient.setQueryData([QUERY_KEYS.todo], context.previousTodos);
+        queryClient.setQueryData(todoQueryKeys.all, context.previousTodos);
       }
     },
   });
