@@ -11,10 +11,14 @@ export type Photo = {
 
 const BASE_URL = "https://jsonplaceholder.typicode.com";
 
-export const requestGetPhotos = () => {
+export const requestGetPhotos = ({ pageParam }: { pageParam: number }) => {
   return requestGet<Photo[]>({
     baseUrl: BASE_URL,
     endpoint: endpoints.photo.getPhotos,
+    queryParams: {
+      _start: pageParam,
+      _limit: 10,
+    },
     errorHandlingStrategy: "errorBoundary",
   });
 };

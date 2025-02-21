@@ -18,7 +18,7 @@ export const endpoints = {
   },
 
   photo: {
-    getPhotos: "/photos?albumId=1",
+    getPhotos: "/photos",
   },
 
   posts: {

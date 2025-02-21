@@ -30,6 +30,12 @@ type QueryProps<ResponseType = unknown> = {
   queryFn: QueryFunction<ResponseType>;
 };
 
+type InfiniteQueryProps<ResponseType = unknown, PageParamType = number> = {
+  queryKey: QueryKey;
+  queryFn: (context: { pageParam: PageParamType }) => Promise<ResponseType>;
+  initialPageParam: PageParamType;
+};
+
 type DehydratedQueryProps<Q> = {
   query: Q;
   useSuspense?: boolean;
@@ -67,4 +73,20 @@ export async function getDehydratedQueries<Q extends QueryProps[]>({
   }
 
   return { queries: dehydrate(queryClient).queries };
+}
+
+export async function getDehydratedInfiniteQuery<Q extends InfiniteQueryProps>({
+  query,
+  useSuspense = false,
+}: DehydratedQueryProps<Q>) {
+  const queryClient = getQueryClient();
+  const queryOptions = { ...query, initialPageParam: 0 };
+
+  if (useSuspense) {
+    queryClient.prefetchInfiniteQuery(queryOptions);
+  } else {
+    await queryClient.prefetchInfiniteQuery(queryOptions);
+  }
+
+  return { query: dehydrate(queryClient).queries };
 }

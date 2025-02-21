@@ -8,5 +8,6 @@ export const photoQueryOptions = {
   all: () => ({
     queryKey: photoQueryKeys.all,
     queryFn: requestGetPhotos,
+    initialPageParam: 0
   }),
 };
