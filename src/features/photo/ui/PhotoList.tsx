@@ -37,7 +37,7 @@ export default function PhotoList() {
           ))
         )}
       </ul>
-      <div className="h-[250px] mt-5" ref={observerRef}>
+      <div className="h-[250px] mt-5 max-w-[650px]" ref={observerRef}>
         {isFetchingNextPage && <PhotoCardLoading />}
       </div>
     </section>
